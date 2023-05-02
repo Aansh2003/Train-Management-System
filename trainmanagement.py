@@ -175,9 +175,13 @@ class TrainData:
         
     # Gets train details for a specific day, place
 
-    def get_scheduled_train_details (self, date, startlocation = '', endlocation = ''):
+    def get_scheduled_train_details (self, date = '', startlocation = '', endlocation = ''):
         data = []
-        if startlocation == '':
+        if startlocation == '' and endlocation == '' and date == '':
+            query = """select * from tblTrainSchedules natural join tblTrains"""
+            self.cursorObject.execute(query)
+            data = self.cursorObject.fetchall()
+        elif startlocation == '':
             query = """select * from tblTrainSchedules natural join tblTrains where end_location = %s"""
             parameters = (endlocation, )
             self.cursorObject.execute(query, parameters)

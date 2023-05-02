@@ -15,10 +15,20 @@ with open(filehtml) as file:
     htmlFile = file.read()
     soup2 = BeautifulSoup(htmlFile,features="lxml")
 
+filehtml2 = 'templates/employee_home.html'
 
+with open(filehtml2) as file:
+    htmlFile = file.read()
+    soup3 = BeautifulSoup(htmlFile,features="lxml")
 
 my_db = TrainData('ruru','password','localhost')
 schedule_id = []
+
+filehtml3 = 'templates/cust_schedules.html'
+
+with open(filehtml3) as file:
+    htmlFile = file.read()
+    soup5 = BeautifulSoup(htmlFile,features="lxml")
 
 @app.route('/', methods=['GET'])
 def home():
@@ -35,8 +45,13 @@ def home():
             return render_template('home.html', username=session['username'],info=message)
         else:
             for value in l:
-                new_p = soup.new_tag("p",**{'class':'booking'})
-                new_p.string = "Scheduled ID:"+str(value[0])+" Train ID:"+str(value[5])
+                new_p = soup.new_tag("p",**{'class':'back'})
+                new_p1 = soup.new_tag("p",**{'class':'booking'})
+                new_p1.string = "Scheduled ID:"+str(value[0])+" Train ID:"+str(value[5])
+                new_p2 = soup.new_tag("p",**{'class':'booking'})
+                new_p2.string = "Start:"+str(value[6])+" End:"+str(value[7])
+                new_p.append(new_p1)
+                new_p.append(new_p2)
                 head.append(new_p)
             return render_template_string(str(soup),username=session['username'])
     return redirect(url_for('login'))
@@ -85,7 +100,29 @@ def register():
 def emp_home():
     if 'username' in session:
         print(session['username'])
-        return render_template('employee_home.html', username=session['username'])
+        my_string = str(soup3)
+        soup4 = BeautifulSoup(my_string)
+        head = soup4.find("container2")
+        l = my_db.get_scheduled_train_details()
+        print(l)
+        if len(l)==0:
+            message = "No Schedules yet."
+            print(message)
+            return render_template('employee_home.html', username=session['username'],info=message)
+        else:
+            for value in l:
+                new_p = soup4.new_tag("p",**{'class':'back'})
+                new_p1 = soup4.new_tag("p",**{'class':'booking'})
+                new_p1.string = "Scheduled ID:"+str(value[1])+" Train ID:"+str(value[0])+" Free: "+str(value[4])+'|'+str(value[6])
+                new_p2 = soup4.new_tag("p",**{'class':'booking'})
+                new_p2.string = "Start:"+str(value[9])
+                new_p3 = soup4.new_tag("p",**{'class':'booking'})
+                new_p3.string = "End:"+str(value[10])
+                new_p.append(new_p1)
+                new_p.append(new_p2)
+                new_p.append(new_p3)
+                head.append(new_p)
+            return render_template_string(str(soup4),username=session['username'])
     return redirect(url_for('emp_login'))
 
 @app.route('/emp_login', methods=['GET', 'POST'])
@@ -125,7 +162,7 @@ def book():
             names.append(my_list[0][8])
             scheduled_id = my_list[0][1]
             if my_db.check_seat_availibility(scheduled_id):
-                if my_db.book_scheduled_train(scheduled_id,session['username'],no_adults,no_children) == True:
+                if my_db.book_scheduled_train(scheduled_id,session['username'],no_adults,no_children) != False:
                     message = no_adults+' ac tickets and '+no_children+' non-AC tickets booked.'
                     return render_template('booking-form.html',message=message)
                 else:
@@ -149,6 +186,9 @@ def manage():
         id = request.form['schedule']
         print(id)
         num = my_db.check_seat_availibility(id)
+        if type(num) == type(True):
+            message = "Not found"
+            return render_template('manage.html',error=message)
         message = 'Booked seats - Non-AC:'+str(num[0])+'  AC:'+str(num[1])
         return render_template('manage.html',info=message)
     return render_template('manage.html')
@@ -185,11 +225,15 @@ def reg():
 def schedule():
     if request.method == 'POST':
         trainID = request.form['trainID']
-        trainName = request.form['trainName']
         start = request.form['start']
         end = request.form['end']
         schedule_id = my_db.schedule_train(trainID,start,end)
-        print(schedule_id)
+        if type(schedule_id) == type(1):
+            message = 'Scheduled ID:'+str(schedule_id)
+            return render_template('schedule.html',message=message)
+        else:
+            message = 'Invalid input'
+            return render_template('schedule.html',error=message)
     return render_template('schedule.html')
 
 @app.route('/remove',methods=['POST','GET'])
@@ -201,7 +245,32 @@ def remove():
         return render_template('remove.html',info=message)
     return render_template('remove.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/sched')
+def sched():
+    my_string = str(soup5)
+    soup6 = BeautifulSoup(my_string)
+    head = soup6.find("container2")
+    print(head)
+    l = my_db.get_scheduled_train_details()
+    print(l)
+    if len(l)==0:
+        message = "No Schedules yet."
+        print(message)
+        return render_template_string(str(soup6),username=session['username'],info=message)
+    else:
+        for value in l:
+            new_p = soup6.new_tag("p",**{'class':'back'})
+            new_p1 = soup6.new_tag("p",**{'class':'booking'})
+            new_p1.string = "Scheduled ID:"+str(value[1])+" Train ID:"+str(value[0])+" Free: "+str(value[4])+'|'+str(value[6])
+            new_p2 = soup6.new_tag("p",**{'class':'booking'})
+            new_p2.string = "Start:"+str(value[9])
+            new_p3 = soup6.new_tag("p",**{'class':'booking'})
+            new_p3.string = "End:"+str(value[10])
+            new_p.append(new_p1)
+            new_p.append(new_p2)
+            new_p.append(new_p3)
+            head.append(new_p)
+        return render_template_string(str(soup6),username=session['username'])
 
-#([('username', 'aa'), ('email', 'aansh.basu@learner.manipal.edu'), ('fname', 'a'), ('sname', 's'), ('phone', 's'), ('gender', '1'), ('password', 'a')])
+if __name__ == '__main__':
+    app.run(host="0.0.0.0",debug=True)

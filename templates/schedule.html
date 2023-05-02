@@ -17,7 +17,7 @@
             top:20%;
             left:33%;
             background-color: #151517;
-            height: 400px;
+            height: 490px;
             width: 700px;
             margin: auto;
             padding: 20px 20px 20px 20px;
@@ -47,7 +47,7 @@
         }
 
         #input #input-group {
-            width: 300px;
+            width: 600px;
             margin: 5px;
             border-top: none;
             border-left: none;
@@ -244,6 +244,17 @@
         div{
             margin-bottom: 2%;
         }
+        p{
+            position: relative;
+            top: 10%;
+            left: 40%;
+            color: white;
+            font-size: 18px;
+            font-family: sans-serif;
+        }
+        .error{
+            color: red;
+        }
 
     </style>
 </head>>
@@ -260,7 +271,6 @@
 
                 <div id="input">
                     <input type="text" id="input-group" placeholder="Train ID" name="trainID" required>
-                    <input type="text" id="input-group" placeholder="Train Name" name="trainName" required>
                     <input type="text" id="input-group" placeholder="Start time (yyyy/mm/dd hh/mm/ss)" name="start" required>
                     <input type="text" id="input-group" placeholder="End time (yyyy/mm/dd hh/mm/ss)" name="end" required>
                 </div>
@@ -271,6 +281,8 @@
                 <a href="/emp_home">
                     <div class="styled">Back</div>
                 </a>
+                <p>{{message}}</p>
+                <p class="error">{{error}}</p>
             </div>
 
         </form>
