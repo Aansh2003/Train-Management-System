@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2a2a2e;
+        }
+
+        form {
+            position: absolute;
+            top:25%;
+            left:37%;
+            background-color: #151517;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color:#4CAF50;
+            /* text-shadow: 2px 2px 4px #000000; */
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color:white;
+            /* text-shadow: 1px 1px 2px #000000; */
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            background-color: #f0e8e8;
+        }
+
+        input[type="submit"] {
+            background-color: #151517;
+            color: #4CAF50;
+            cursor: pointer;
+            font-size: 16px;
+            left:25%;
+            display: block;
+            width: 200px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 18px;
+            font-family: sans-serif;
+            text-decoration: none;
+            border: 2px solid #333;
+            letter-spacing: 1px;
+            text-align: center;
+            position: relative;
+            transition: all .5s;
+            margin-bottom: 10px;
+        }
+
+        /* .styled{
+            position: relative;
+            left:25%;
+            display: block;
+            width: 200px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 18px;
+            font-family: sans-serif;
+            text-decoration: none;
+            color: #f0e8e8;
+            border: 2px solid #333;
+            letter-spacing: 1px;
+            text-align: center;
+            position: relative;
+            transition: all .5s;
+            background-color: #151517;
+        }
+        */
+        input[type="submit"]:after {
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #4CAF50;
+            transition: all .35s;
+        }
+
+        input[type="submit"]:hover {
+            color: #151517;
+            background-color: #4CAF50;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+            /* text-shadow: 1px 1px 2px #000000; */
+        }
+
+        div {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .styled {
+            text-align: center;
+            position: absolute;
+            left:25%;
+            background-color: #151517;
+            color: #4CAF50;
+            cursor: pointer;
+            font-size: 16px;
+            width: 200px;
+            height: 40px;
+            font-size: 18px;
+            font-family: sans-serif;
+            border: 2px solid #333;
+            letter-spacing: 1px;
+            text-align: center;
+            position: relative;
+            transition: all .5s;
+            padding-top: 1%;
+        }
+
+        /* .styled{
+            position: relative;
+            left:25%;
+            display: block;
+            width: 200px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 18px;
+            font-family: sans-serif;
+            text-decoration: none;
+            color: #f0e8e8;
+            border: 2px solid #333;
+            letter-spacing: 1px;
+            text-align: center;
+            position: relative;
+            transition: all .5s;
+            background-color: #151517;
+        }
+        */
+        .styled:after {
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #4CAF50;
+            transition: all .35s;
+        }
+
+        .styled:hover {
+            color: #151517;
+            background-color: #4CAF50;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST">
+        <h1>Check Train</h1>
+        <label for="train">Schedule ID:</label>
+        <input type="text" id="train" name="schedule">
+        <p>{{info}}</p>
+        <input  type="submit" value="Remove">
+        <a href="/emp_home">
+            <div class="styled">Back</div>
+        </a>
+    </form>
+</body>
+</html>
